@@ -1,0 +1,10 @@
+package nju.view;
+
+import javax.swing.ImageIcon;
+
+public class Images {
+	protected static ImageIcon createImageIcon(String path){
+		ImageIcon icon = new ImageIcon(path);
+		return icon;
+	}
+}

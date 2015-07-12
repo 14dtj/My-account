@@ -1,0 +1,1080 @@
+/*
+ * @author:杜天蛟 141250031 一班
+ */
+public class ALU {
+	
+	// 1
+	public String calculation(String formula){
+		String result="";
+		int i=0;
+		
+		if(formula.contains("+")){
+			i=formula.indexOf("+");
+			String operand1=formula.substring(0,i);
+			String operand2="";
+			if(formula.contains("(")){
+				
+				operand2=formula.substring(i+2, formula.length()-2);
+				
+			}else{
+				operand2=formula.substring(i+1,formula.length()-1);
+			}
+			if(formula.contains("\\.")){
+				operand1=floatRepresentation(operand1,23,8);
+				operand2=floatRepresentation(operand2,23,8);
+				String t=floatAddition(operand1,operand2,23,8,9);
+				result=floatTrueValue(t.substring(0, 32),23,8);
+			}else{
+				operand1=integerRepresentation(operand1,32);
+		    	operand2=integerRepresentation(operand2,32);
+				String t=integerAddition(operand1,operand2,'0',32);
+				result=integerTrueValue(t.substring(0, 32));
+			}
+			
+		}
+		if(formula.contains("-")&&(formula.contains("+")==false)
+				&&(formula.contains("*")==false)&&(formula.contains("/")==false)){
+			
+			i=formula.indexOf("-");
+			String operand1=formula.substring(0, i);
+			String operand2="";
+			if(formula.contains("(")){
+				operand2=formula.substring(i+2, formula.length()-2);
+			}else{
+				operand2=formula.substring(i+1,formula.length()-1);
+			}
+			if(formula.contains("\\.")){
+				operand1=floatRepresentation(operand1,23,8);
+				operand2=floatRepresentation(operand2,23,8);
+				String t=floatSubtraction(operand1,operand2,23,8,9);
+				result=floatTrueValue(t.substring(0, 32),23,8);
+			}else{
+				operand1=integerRepresentation(operand1,32);
+				operand2=integerRepresentation(operand2,32);
+				String t=integerSubtraction(operand1,operand2,32);
+				result=integerTrueValue(t.substring(0, 32));
+			}
+			
+		}
+		if(formula.contains("*")){
+			i=formula.indexOf("*");
+			String operand1=formula.substring(0, i);
+			String operand2="";
+			if(formula.contains("(")){
+				operand2=formula.substring(i+2, formula.length()-2);
+			}else{
+				operand2=formula.substring(i+1,formula.length()-1);
+			}
+			if(formula.contains("\\.")){
+				operand1=floatRepresentation(operand1,23,8);
+				operand2=floatRepresentation(operand2,23,8);
+				String t=floatMultiplication(operand1,operand2,23,8);
+				result=floatTrueValue(t,23,8);
+			}else{
+				operand1=integerRepresentation(operand1,32);
+				operand2=integerRepresentation(operand2,32);
+				String t=integerMultiplication(operand1,operand2,32);
+				result=integerTrueValue(t);
+			}
+		}
+		if(formula.contains("/")){
+			i=formula.indexOf("/");
+			String operand1=formula.substring(0, i);
+			String operand2="";
+			if(formula.contains("(")){
+				operand2=formula.substring(i+2, formula.length()-2);
+			}else{
+				operand2=formula.substring(i+1,formula.length()-1);
+			}
+			if(formula.contains("\\.")){
+				operand1=floatRepresentation(operand1,23,8);
+				operand2=floatRepresentation(operand2,23,8);
+				String t=floatDivision(operand1,operand2,23,8);
+				result=floatTrueValue(t,23,8);
+			}else{
+				operand1=integerRepresentation(operand1,32);
+				operand2=integerRepresentation(operand2,32);
+				String t=integerDivision(operand1,operand2,32);
+				result=integerTrueValue(t.substring(0, 32));
+			}
+		}
+		
+		return result;
+	}
+
+	// 2
+	public String integerRepresentation(String number, int length) {
+		//to calculate the maximum and minimum number within the length
+				int MaxNum=0;
+				int MinNum=0;
+				for(int i=0;i<length-1;i++){
+					MaxNum+=Math.pow(2, i);
+				}
+				MinNum=(MaxNum+1)*(-1);
+				//to return
+				String result="";
+				//converse to integer
+				int n = Integer.parseInt(number); 
+				if(n==0){
+					for(int i=0;i<length;i++){
+						result+='0';
+					}
+				}else if(n>0){
+					if(n>MaxNum){
+						return "Overflow!";
+					}else{
+					   String temp="";
+					   while(n>=1){
+						   temp+=n%2;
+						   n=n/2;
+					   }
+					   StringBuffer sb=new StringBuffer(temp);
+					   sb=sb.reverse();
+					   temp=sb.toString();
+					   if(temp.length()<length){
+						   for(int i=0;i<length-temp.length();i++){
+							   result+='0';
+						   }
+					   }
+						   result+=temp;
+					
+					}
+				}else if(n<0){
+					if(n<MinNum){
+						return "Overflow!";
+					}else{
+						n=-n;
+						String t =Integer.toBinaryString(n);
+						if(t.length()<length){
+							 for(int i=0;i<length-t.length();i++){
+								   result+='0';
+							   }
+						}
+						result+=t;
+						int x=result.lastIndexOf("1");
+						result=negation(result.substring(0, x))+result.substring(x);
+						
+//						 String temp="";
+//						   while(n>=1){
+//							   temp+=n%2;
+//							   n=n/2;
+//						   }
+//						   StringBuffer sb=new StringBuffer(temp);
+//						   sb=sb.reverse();
+//						   result=sb.toString();
+						
+					}
+				}
+				return result;
+		
+	}
+
+	// 3
+	public String floatRepresentation(String number, int sLength, int eLength){
+		if(number.contains(".")==false){
+			return "Wrong format!";
+		}
+		String result="";
+		if(number.charAt(0)=='-'){
+			result+='1';
+			//cut the "-" off
+			number=number.substring(1);
+		}else{
+			result+='0';
+		}
+	
+		
+		String[] num=number.split("\\.");
+		if(Integer.parseInt(num[0])==0&&Integer.parseInt(num[1])==0){
+			while(result.length()<1+sLength+eLength){
+				result+='0';
+			}
+			return result;
+		}
+		String integer=Integer.toBinaryString(Integer.parseInt(num[0]));
+		
+		Float f = Float.parseFloat("0."+num[1]);
+		String flo="";//储存小数部分的二进制
+		int i=0;
+        while(f!=0){
+        	char a = 0;
+        	if(f*2>=1){
+        		a='1';
+        		f=f*2-1;
+        	}else if(f*2<1){
+        		a='0';
+        		f=f*2;
+        	}
+        	i++;
+        	flo+=a;
+        	if(i==sLength-(integer.length()-1)){
+//        		if(f*2>=1){
+//        			flo=Integer.toBinaryString(Integer.valueOf(flo,2)+1);
+//        		
+//        		}
+        		break;
+        	
+        	}
+        	
+        		
+        }//10000000000
+        //指数
+        //if move left
+        String index="";
+        if(integer.startsWith("1")){
+        	 index=Integer.toBinaryString((int) (integer.length()-1+Math.pow(2, eLength-1)-1));
+        	//如果整数已经超出表示范围
+        	 //@warning! 
+				if(index.length()>eLength){
+					String wei="0";
+					String zhi ="1";
+					while(wei.length()<sLength){
+						wei+='0';
+					}
+					while(zhi.length()<eLength){
+						zhi+='1';
+					}
+					result+= zhi+wei;
+					return result;
+				}
+        }else{
+        	//if move right
+        	 int x=0;
+        	 while(flo.charAt(x)!='1'){
+        		 x++;
+        	 }
+        	 //如果下溢 反规格化数
+        	 if(x+1>Math.pow(2, eLength-1)-1){
+        		 String zhi="0";
+        		 while(zhi.length()<eLength){
+        			 zhi+='0';
+        		 }
+        		 String wei =flo.substring((int) (Math.pow(2, eLength-1)-1));
+        		 result+=zhi+wei;
+        		 return result;
+        	 }
+        	 index=Integer.toBinaryString((int)(Math.pow(2, eLength-1)-1)-x-1);
+        	 
+        	 flo=flo.substring(x+1);
+        }
+//        //如果正无穷或负无穷大
+//        if(Integer.valueOf(index,2)>=Math.pow(2, eLength-1)-1){
+//        	flo="0";
+//            while(flo.length()<sLength){
+//            	flo+='0';
+//            }
+//            index="1";
+//            while(index.length()<eLength){
+//            	index+='1';
+//            }
+//            result+=" "+index+" "+flo;
+//    		return result;
+//        }
+        //补齐指数的位数
+        if(index.length()<eLength){
+        	String temp="";
+        	for(int j=0;j<eLength-index.length();j++){
+        		temp+='0';
+        	}
+        	index=temp+index;
+        }
+        
+        //尾数
+        String m="";
+        if(integer.startsWith("1")){
+            m = integer.substring(1)+flo;
+        }else{
+        	m=flo;
+        }
+        //四舍五入
+        if(i==sLength-(integer.length()-1)){
+        	if(f*2>=1){
+    			m=Integer.toBinaryString(Integer.valueOf(m,2)+1);
+    		
+    		}
+        }
+        while(m.length()<sLength){
+        	m+='0';
+        }
+        
+        result+=index+m;
+		return result;
+	}
+
+	// 4
+	public String ieee754(String number, int length) {
+		String result="";
+		if(length==32){
+			result=floatRepresentation(number,23,8);
+		}else if(length==64){
+			result=floatRepresentation(number,52,11);
+		}
+		return result;
+	}
+
+	// 5
+	public String integerTrueValue(String operand){
+		int tempre=0;
+		String result="";
+		if(operand.charAt(0)=='0'){
+			int[] temp=new int[operand.length()];
+			for(int i=0;i<operand.length();i++){
+				temp[i]=Integer.parseInt(operand.charAt(i)+"");
+			}
+			for(int i=temp.length-1;i>=0;i--){
+				tempre+=temp[i]*Math.pow(2,temp.length-1- i);
+			}
+			result=tempre+"";
+	    }else if(operand.charAt(0)=='1'){
+		    operand=negation(operand);
+		    int[] temp1=new int[operand.length()];
+		    for(int i=0;i<operand.length();i++){
+				temp1[i]=Integer.parseInt(operand.charAt(i)+"");
+			}
+			for(int i=temp1.length-1;i>=0;i--){
+				tempre+=temp1[i]*Math.pow(2,temp1.length-1- i);
+			}
+			tempre++;
+			result="-"+tempre;
+		}
+		return result;
+	}
+
+	// 6
+	public String floatTrueValue(String operand, int sLength, int eLength){
+		String result="";
+		if(operand.charAt(0)=='1'){
+			result+='-';
+		}
+		if(operand.substring(1).contains("1")==false){
+			return 0+"";
+		}
+		//+oo -oo NaN
+		if(operand.substring(1,eLength+1).contains("0")==false){
+			if(operand.substring(eLength+1).contains("1")){
+				return "NaN";
+			}else{
+				if(operand.charAt(0)=='1'){
+					return "-Inf";
+				}else if(operand.charAt(0)=='0'){
+					return "+Inf";
+				}
+			}
+		}
+		Double wei=1.0;
+		int index=Integer.valueOf(operand.substring(1, eLength+1),2)
+				-(int)(Math.pow(2, eLength-1)-1);//指数;
+		//反规格化数
+		if(operand.substring(1,eLength+1).contains("1")==false){
+			wei=0.0;
+			index--;
+		}
+		
+		String flo=operand.substring(eLength+1);//尾数
+	    for(int i=0;i<flo.length();i++){
+	    	if(flo.charAt(i)=='1'){
+	    		wei+=Math.pow(0.5,i+1);
+	    	}
+	    }
+	    result+=wei*(Math.pow(2, index));
+		return result;
+	}
+
+	// 7
+	public String negation (String operand) {
+		String result="";
+		for(int i=0;i<operand.length();i++){
+			if(operand.charAt(i)=='0'){
+				result+='1';
+			}else if(operand.charAt(i)=='1'){
+				result+='0';
+			}
+		}
+		return result;
+	}
+
+	// 8
+	public String leftShift(String operand, int n) {
+		String result="";
+		char[] temp=operand.toCharArray();
+		for(int j=0;j<n;j++){
+			for(int i=0;i<operand.length()-1;i++){
+				temp[i]=temp[i+1];
+			}
+			temp[temp.length-1]='0';
+			
+		}
+		for(int k=0;k<temp.length;k++){
+			result+=temp[k];
+		}
+		return result;
+	}
+
+	// 9
+	public String rightAriShift(String operand, int n) {
+		String result="";
+		char[] temp=operand.toCharArray();
+		if(temp[0]=='0'){
+			for(int i=0;i<n;i++){
+				for(int j=operand.length()-1;j>0;j--){
+					temp[j]=temp[j-1];
+				}
+				temp[0]='0';
+			}
+		}else if(temp[0]=='1'){
+			for(int i=0;i<n;i++){
+				for(int j=operand.length()-1;j>0;j--){
+					temp[j]=temp[j-1];
+				}
+				temp[0]='1';
+			}
+		}
+		for(int k=0;k<temp.length;k++){
+			result+=temp[k];
+		}
+		return result;
+	}
+
+	// 10
+	public String rightLogShift(String operand, int n){
+		String result="";
+		char[] temp=operand.toCharArray();
+		for(int i=0;i<n;i++){
+			for(int j=operand.length()-1;j>0;j--){
+				temp[j]=temp[j-1];
+			}
+			temp[0]='0';
+		}
+		for(int k=0;k<temp.length;k++){
+			result+=temp[k];
+		}
+		return result;
+	}
+
+	// 11
+	public String fullAdder(char x, char y, char c) {
+		String result="";
+		int x1=x-'0';
+		int y1=y-'0';
+		int c1=c-'0';
+		result+=x1^y1^c1;
+		result+=x1&y1|x1&c1|y1&c1;
+		
+		return result;
+	}
+
+	// 12
+	public String claAdder(String operand1, String operand2, char c) {
+		String result="";
+		int[] x= new int[9];
+		int[] y= new int[9];
+		int[] j= new int[9];
+		j[0]= Integer.parseInt(c+"");
+		int[] p=new int[9];
+		int[] g = new int[9];
+		g[0]=j[0];
+		
+		String o1=integerTrueValue(operand1);
+		String o2=integerTrueValue(operand2);
+		operand1=integerRepresentation(o1,8); 
+		operand2=integerRepresentation(o2,8);
+		
+		for(int i=1;i<=8;i++){
+			x[i]=operand1.charAt(8-i)-'0';
+			y[i]=operand2.charAt(8-i)-'0';
+			p[i]=x[i]|y[i];
+			g[i]=x[i]&y[i];
+		}
+
+		//算出进位
+		for(int i=1;i<=8;i++){
+	
+			int[] pc = new int[i+1];
+			pc[0]=g[i];
+			for(int k=1;k<=i;k++){
+				
+				pc[k] =p[i];
+				for(int m=0;m<k;m++){
+					pc[k]=pc[k]&p[i-m];
+				}
+				pc[k]=pc[k]&g[i-k];
+			}
+			j[i]=g[i];
+			for(int m=0;m<=i;m++){
+				j[i]=j[i]|pc[m];
+			}
+	  }
+		//use fullAdder to compute
+		for(int i=8;i>0;i--){
+			result+=fullAdder((char)(x[i]+'0'),(char)(y[i]+'0'),(char)(j[i-1]+'0')).charAt(0);
+		}
+		result+=j[8];
+		
+//		for(int i=0;i<=8;i++){
+//			result+=j[i];
+//		}
+		return result;
+	}
+
+	// 13
+	public String integerAddition(String operand1, String  operand2, char c, int length) {
+		int orilength=length;//save the original length
+		while(length%8!=0){
+			length++;
+		}
+		String result="";
+    	if(operand1.length()<length){
+    		String sign="";//补全符号位
+			if(operand1.charAt(0)=='1'){
+				for(int i=0;i<length-operand1.length();i++){
+					sign+='1';
+				}
+			}else if(operand1.charAt(0)=='0'){
+				for(int i=0;i<length-operand1.length();i++){
+					sign+='0';
+				}
+			}
+			operand1=sign+operand1.substring(0, operand1.length());
+		}
+    	if(operand2.length()<length){
+    		String sign1="";//补全符号位
+    		if(operand2.charAt(0)=='1'){
+				for(int i=0;i<length-operand2.length();i++){
+					sign1+='1';
+				}
+			}else if(operand2.charAt(0)=='0'){
+				for(int i=0;i<length-operand2.length();i++){
+					sign1+='0';
+				}
+			}
+			operand2=sign1+operand2.substring(0, operand2.length());
+    	}
+    	
+    	String[] temp;//to store partial result
+    	char[] jin = new char[length/8+1];
+    	jin[0]=c;
+		
+			temp=new String[length/8+1];
+			for(int i=1;i<=(length/8);i++){
+				temp[i]=claAdder(operand1.substring(length-8*i,length-8*i+8),operand2.substring(length-8*i,length-8*i+8),jin[i-1]).substring(0,8);
+				jin[i]=claAdder(operand1.substring(length-8*i,length-8*i+8),operand2.substring(length-8*i,length-8*i+8),jin[i-1]).charAt(8);
+			}
+			for(int i=length/8;i>0;i--){
+				result+=temp[i];
+			}
+			
+		if(orilength<length){
+			result=result.substring(length-orilength);
+		}
+		//whether overflow or not
+		result+=jin[length/8];
+		return result;
+	}
+
+	// 14
+	public String integerSubtraction(String operand1, String operand2, int length) {
+		String result="";
+	    operand2=integerAddition(negation(operand2),"01",'0',length).substring(0,length);
+	    result=integerAddition(operand1,operand2,'0',length);
+		return result;
+	}
+
+	// 15
+	public String integerMultiplication(String operand1, String operand2, int length) {
+		String result="";
+		//补齐位数
+		if(operand1.length()<length){
+			String temp="";
+			for(int j=0;j<length-operand1.length();j++){
+				temp+=operand1.charAt(0);
+			}
+			operand1=temp+operand1.substring(0);
+		}
+		// use operand2's register to restore the partial result
+		if(operand2.length()<2*length){
+			String temp="";
+			for(int j=0;j<2*length-operand2.length();j++){
+				temp+=operand2.charAt(0);
+			}
+			operand2=temp+operand2.substring(0);
+		}
+		operand2+='0';//for initial judgment
+//		for(int i=0;i<length;i++){
+//			if(operand2.charAt(2*length)-operand2.charAt(2*length-1)>0){
+//				operand2=integerAddition(operand2.substring(0,length),operand1,'0',length).substring(0,length)+
+//						operand2.substring(length,2*length+1);
+//			}else if(operand2.charAt(2*length)-operand2.charAt(2*length-1)<0){
+//				operand2=integerSubtraction(operand2.substring(0,length),operand1,length).substring(0,length)+
+//						operand2.substring(length,2*length+1);
+//			}
+//			// move to right
+//			operand2=operand2.charAt(0)+operand2.substring(0,2*length);
+//		}
+//		result=operand2.substring(0,2*length);
+		return operand2;
+	}
+
+	// 16
+	public String integerDivision (String operand1, String operand2, int length) {
+		String result="";
+		char initial=operand1.charAt(0);
+		if(integerTrueValue(operand2)=="0"){
+			return "The divisor can't be zero!";
+		}
+
+		// use operand1's register to restore the partial result
+		//and now operand1 has 2*length bits
+		if(operand1.length()<2*length){
+			String temp="";
+			if(operand1.charAt(0)=='1'){
+				for(int j=0;j<2*length-operand1.length();j++){
+					temp+='1';
+				}
+			}else if(operand1.charAt(0)=='0'){
+				for(int j=0;j<2*length-operand1.length();j++){
+					temp+='0';
+				}
+			}
+			operand1=temp+operand1.substring(0);
+		}
+		
+		for(int i=0;i<length;i++){
+			//move to left
+			operand1=operand1.substring(1);
+			//subtract
+			String temp="";
+			if(initial==operand2.charAt(0)){
+				temp=integerSubtraction(operand1.substring(0,length),operand2,length).substring(0,length);
+			}else{
+				temp=integerAddition(operand1.substring(0,length),operand2,'0',length).substring(0,length);
+			}
+			//if enough
+			if(temp.charAt(0)==initial){
+				
+				operand1=temp+operand1.substring(length)+'1';
+				
+		    }else{
+		    	operand1=operand1+'0';
+		    }
+		}
+		result=operand1.substring(length)+operand1.substring(0,length);
+		return result;
+	}
+
+	// 17
+	public String floatAddition(String operand1, String operand2, int sLength,
+			int eLength, int gLength) {
+		String result="";
+		int over=0;//whether overflow or not
+		if(floatTrueValue(operand1,sLength,eLength)=="0"){
+			return operand2;
+		}
+		if(floatTrueValue(operand2,sLength,eLength)=="0"){
+			return operand1;
+		}
+		
+		
+		//尾数前隐去的一位
+		char c1='1';
+		char c2='1';
+		if(operand1.substring(1, eLength+1).contains("1")==false){
+			c1='0';
+		}
+		if(operand2.substring(1, eLength+1).contains("1")==false){
+			c2='0';
+		}
+		//尾数
+		String flo1=c1+operand1.substring(eLength+1);
+		String flo2=c2+operand2.substring(eLength+1);
+		//补全保护位  方便下面右移
+		while(flo1.length()<sLength+1+gLength){
+			flo1+='0';
+			flo2+='0';
+		}
+		int index1=Integer.valueOf(operand1.substring(1,eLength+1),2);
+		int index2=Integer.valueOf(operand2.substring(1,eLength+1),2);
+		//temporary index
+		String index="";
+		if(index1<index2){
+			//右移尾数
+			
+			flo1=rightLogShift(flo1,index2-index1);
+			//增量小阶码
+			
+			index=operand2.substring(1,eLength+1);
+			
+		}
+	
+		if(index2<index1){
+			//右移尾数
+		
+			flo2=rightLogShift(flo2,index1-index2);
+			
+			//增量小阶码
+			
+			index=operand1.substring(1,eLength+1);
+		}
+		//带符号尾数相加
+		String flo3="";
+		if(operand1.charAt(0)==operand2.charAt(0)){
+			result+=operand1.charAt(0);
+			flo3=integerAddition(flo1,flo2,'0',sLength+1+gLength).substring(0, sLength+1+gLength);
+			//如果尾数溢出
+			if(integerAddition(flo1,flo2,'0',sLength+1+gLength).charAt(sLength+1+gLength)=='1'){
+				//右移尾数
+				flo3='1'+flo3.substring(0, sLength);
+				index=integerAddition(index,"01",'0',eLength).substring(0,eLength);
+				//如果指数溢出 报告上溢
+			if(integerAddition(index,"01",'0',eLength).charAt(eLength)=='1'){
+					while(result.length()<eLength+1){
+						result+='1';
+					}
+					while(result.length()<eLength+1+sLength){
+						result+='0';
+					}
+					return result;
+				}
+				//判断结果有无规格化
+			int x=flo3.indexOf("1");
+			flo3=leftShift(flo3,x);
+			String t=integerSubtraction(index,integerRepresentation(x+"",eLength),eLength);
+			
+				//阶码下溢
+				if(Integer.valueOf(index,2)<Integer.valueOf(t.substring(0,eLength),2)){
+					while(result.length()<eLength+1+sLength){
+						result+='0';
+					}
+				
+					return result;
+				}
+				index=t.substring(0, eLength);
+				//舍入结果
+				if(gLength>0){
+					if(flo3.charAt(sLength+1)=='1'){
+						flo3=Integer.toBinaryString(Integer.valueOf(flo3.substring(0, sLength+1),2)+1);
+					
+					}
+				}
+				flo3=flo3.substring(1, sLength+1);
+				
+				
+				result+=" "+index+" "+flo3;
+				return result;
+				
+			}else{
+				//判断结果有无规格化
+				int x=flo3.indexOf("1");
+				flo3=leftShift(flo3,x);
+				String t=integerSubtraction(index,integerRepresentation(x+"",eLength),eLength);
+			
+				//阶码下溢?
+				if(Integer.valueOf(index,2)<Integer.valueOf(t.substring(0,eLength),2)){
+					while(result.length()<eLength+1+sLength){
+						result+='0';
+					}
+					return result;
+				}
+				index=t.substring(0, eLength);
+				//舍入结果
+				if(gLength>0){
+					if(flo3.charAt(sLength+1)=='1'){
+						flo3=Integer.toBinaryString(Integer.valueOf(flo3.substring(0, sLength+1),2)+1);
+					}
+				}
+				flo3=flo3.substring(1, sLength+1);
+				
+				result+=" "+index+" "+flo3;
+				return result;
+			}
+			
+		}else{
+			//符号位不同
+			String t=integerSubtraction(flo1,flo2,sLength+gLength+1);
+			//如果有进位 正常
+			if(t.charAt(sLength+gLength+1)=='1'){
+				flo3=t.substring(0, sLength+gLength+1);
+				result+=operand1.charAt(0);
+			}else{
+				flo3=t.substring(0, sLength+gLength+1);
+			//如果无进位，取反加一后，符号与被减数相反
+				result+=negation(operand1.charAt(0)+"");
+				flo3=integerAddition(negation(flo3),"01",'0',sLength+gLength+1).substring(0,sLength+gLength+1);
+			}
+				//如果尾数是0
+				if(flo3.contains("1")==false){
+					while(result.length()<1+sLength+eLength){
+						result+='0';
+					}
+					return result;
+				}
+				//如果尾数溢出
+				if(integerAddition(flo1,flo2,'0',sLength+1+gLength).charAt(sLength+1+gLength)=='1'){
+					//右移尾数
+					flo3='1'+flo3.substring(0, sLength+gLength);
+					index=integerAddition(index,"01",'0',eLength).substring(0,eLength);
+					//如果指数溢出 报告上溢
+					if(integerAddition(index,"01",'0',eLength).charAt(eLength)=='1'){
+						while(result.length()<eLength+1){
+							result+='1';
+						}
+						while(result.length()<eLength+1+sLength){
+							result+='0';
+						}
+						return result;
+					}
+					//判断结果有无规格化
+					int x=flo3.indexOf("1");
+					flo3=leftShift(flo3,x);
+					String s=integerSubtraction(index,integerRepresentation(x+"",eLength),eLength);
+				
+					//阶码下溢
+					if(Integer.valueOf(index,2)<Integer.valueOf(s.substring(0,eLength),2)){
+						while(result.length()<eLength+1+sLength){
+							result+='0';
+						}
+						return result;
+					}
+					index=t.substring(0, eLength);
+					//舍入结果
+					if(gLength>0){
+						if(flo3.charAt(sLength+1)=='1'){
+							flo3=Integer.toBinaryString(Integer.valueOf(flo3.substring(0, sLength+1))+1);
+						}
+					}
+					flo3=flo3.substring(1,sLength+1);
+					
+					result+=" "+index+" "+flo3;
+					return result;
+					
+				}else{
+					//判断结果有无规格化
+					int x=flo3.indexOf("1");
+					flo3=leftShift(flo3,x);
+					String s=integerSubtraction(index,integerRepresentation(x+"",eLength),eLength);
+				
+					//阶码下溢?
+					if(Integer.valueOf(index,2)<Integer.valueOf(s.substring(0,eLength),2)){
+						while(result.length()<eLength+1+sLength){
+							result+='0';
+						}
+						return result;
+					}
+					index=s.substring(0, eLength);
+					
+//					//舍入结果
+					//如果有保护位
+					if(gLength>0){
+						if(flo3.charAt(sLength+1)=='1'){
+							flo3=Integer.toBinaryString(Integer.valueOf(flo3.substring(0, sLength+1),2)+1);
+						}
+					}
+					flo3=flo3.substring(1,sLength+1);
+					
+					result+=" "+index+" "+flo3;
+					return result;
+				}
+			
+			
+	}
+		
+	
+	}
+
+	// 18
+	public String floatSubtraction(String operand1, String operand2,
+			int sLength, int eLength, int gLength) {
+		String result="";
+		operand2=negation(operand2.charAt(0)+"")+operand2.substring(1);
+		result=floatAddition(operand1,operand2,sLength,eLength,gLength);
+		return result;
+	}
+
+	// 19
+	public String floatMultiplication(String operand1, String operand2, 
+			int sLength, int eLength) {
+		String result="";
+		if(operand1.charAt(0)==operand2.charAt(0)){
+			result+='0';
+		}else{
+			result+='1';
+		}
+		String index=integerAddition(operand1.substring(1, eLength+1),
+				operand2.substring(1, eLength+1),'0',eLength).substring(0, eLength);
+		String pian="0";//偏值
+		while(pian.length()<eLength){
+			pian+='1';
+		}
+		index=integerSubtraction(index,pian,eLength).substring(0, eLength);
+        //如果此时指数上溢，即得出的指数比两个乘数的指数小
+		if(Integer.valueOf(operand1.substring(1,eLength+1),2)+
+				Integer.valueOf(operand2.substring(1,eLength+1),2)
+				-Math.pow(2, eLength-1)-1>Integer.valueOf(index,2)){
+			String zhi="1";
+			String wei="0";
+			while(zhi.length()<eLength){
+				zhi+='1';
+			}
+			while(wei.length()<sLength){
+				wei+='0';
+			}
+			result+=zhi+wei;
+			return result;
+		}
+		//如果此时指数下溢
+		if(Integer.valueOf(operand1.substring(1,eLength+1),2)+
+				Integer.valueOf(operand2.substring(1,eLength+1),2)
+				-Math.pow(2, eLength-1)-1<Integer.valueOf(index,2)){
+			while(result.length()<1+eLength+sLength){
+				result+='0';
+			}
+			return result;
+		}
+		//multiplier1,multiplier2 
+		String mult1="";
+		String mult2="";
+		//尾数前隐去的一位
+		char c1='1';
+		char c2='1';
+		//如果multiplier1,multiplier2 是反规格化数
+		if(operand1.substring(1,eLength+1).contains("1")==false){
+			c1='0';
+		}
+		if(operand2.substring(1,eLength+1).contains("1")==false){
+			c2='0';
+		}
+		
+		mult1=c1+operand1.substring(eLength+1);
+		mult2=c2+operand2.substring(eLength+1);
+		
+		//在部分积前面补0
+		String part="0";
+		while(part.length()<sLength+1){
+			part+='0';
+		}
+	    part+=mult1;
+	    for(int j=0;j<mult1.length();j++){
+	    	
+	    	if(mult1.charAt(mult1.length()-j-1)=='1'){
+	    		String temp=integerAddition(part.substring(0, sLength+1),mult2,'0',sLength+1).substring(0,sLength+1);
+	    		//move right
+		    	part='0'+temp+part.substring(sLength+2,2*sLength+1);
+	    	}else{
+	    	//move right
+	    		part='0'+part.substring(0,2*sLength+1);
+	    	}
+	    	
+	    }
+	    //舍入
+	    String flo="";//尾数
+	    if(part.charAt(2+sLength)=='1'){
+	    	part=Integer.toBinaryString(Integer.valueOf(part,2)+1);
+	    }
+		flo=part.substring(2,2+sLength);
+		result+=index+flo;
+		return result;
+	}
+	
+	//20
+	public String floatDivision(String operand1, String operand2, 
+			int sLength, int eLength) {
+		String result="";
+		//判断符号位
+		if(operand1.charAt(0)==operand2.charAt(0)){
+			result+='0';
+		}else{
+			result+='1';
+		}
+		//如果被除数是0 返回0
+		if(floatTrueValue(operand1,sLength,eLength)=="0"){
+			while(result.length()<eLength+sLength+1){
+				result+='0';
+			}
+			return result;
+		}
+		//如果除数是0，返回无穷
+		if(floatTrueValue(operand2,sLength,eLength)=="0"){
+			while(result.length()<eLength+1){
+				result+='1';
+			}
+			while(result.length()<sLength+eLength+1){
+				result+='0';
+			}
+			return result;
+		}
+		//指数相减
+		String index=integerSubtraction(operand1.substring(1, eLength+1),
+				operand2.substring(1, eLength+1),eLength).substring(0, eLength);
+		String pian="0";//偏值
+		while(pian.length()<eLength){
+			pian+='1';
+		}
+		index=integerAddition(index,pian,'0',eLength).substring(0, eLength);
+		//如果上溢 
+		if(Integer.valueOf(operand1.substring(1,eLength+1),2)-
+				Integer.valueOf(operand2.substring(1,eLength+1),2)
+				+Math.pow(2, eLength-1)-1>Integer.valueOf(index,2)){
+			while(result.length()<eLength+1){
+				result+='1';
+			}
+			while(result.length()<sLength+eLength+1){
+				result+='0';
+			}
+			return result;
+			
+		}
+		//如果下溢
+		if(Integer.valueOf(operand1.substring(1,eLength+1),2)-
+				Integer.valueOf(operand2.substring(1,eLength+1),2)
+				+Math.pow(2, eLength-1)-1<Integer.valueOf(index,2)){
+			while(result.length()<eLength+sLength+1){
+				result+='0';
+			}
+			return result;
+		}
+		String remainder="";
+		String divisor="";
+		//尾数前隐去的一位
+		char c1='1';
+		char c2='1';
+		//如果operand 是反规格化数
+	    if(operand1.substring(1,eLength+1).contains("1")==false){
+			c1='0';
+		}
+		if(operand2.substring(1,eLength+1).contains("1")==false){
+			c2='0';
+		}
+		remainder=c1+operand1.substring(eLength+1);
+		String quotient="0";
+		divisor=c2+operand2.substring(eLength+1);
+		//quotient 初始化
+		while(quotient.length()<sLength+1){
+			quotient+='0';
+		}
+		for(int i=0;i<sLength+1;i++){
+			char q='0';
+			if(Integer.valueOf(remainder,2)-Integer.valueOf(divisor,2)>0){
+				remainder=integerSubtraction(remainder,divisor,sLength+1).substring(0, sLength+1);
+				q='1';
+			}
+			
+			quotient+=q;
+			//move left
+			remainder=remainder.substring(1)+'0';
+			quotient=quotient.substring(1);
+		}
+		//根据余数舍入 如果余数大于除数的一半，进一
+		if(2*Integer.valueOf(remainder,2)>Integer.valueOf(divisor,2)){
+			quotient=Integer.toBinaryString(Integer.valueOf(quotient,2)+1);
+		}
+		//规格化
+		int x=quotient.indexOf('1');
+		String flo=quotient.substring(x+1);//尾数
+		while(flo.length()<sLength){
+			flo+='0';
+		}
+		index=integerSubtraction(index,integerRepresentation(x+"",eLength),eLength)
+				.substring(0, eLength);
+		result+=" "+index+" "+flo;
+		return result;
+	}
+}

@@ -1,0 +1,9 @@
+import junit.framework.TestCase;
+
+
+public class TestHelloWorld extends TestCase {
+	public void testprintHello(){
+		HelloWorld hw = new HelloWorld();
+		assertTrue(hw.printHello().equals("Hello orld"));
+	}
+}

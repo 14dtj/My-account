@@ -1,0 +1,10 @@
+package nju.view;
+
+import javax.swing.*;
+
+public class MainFrame extends JFrame{
+	private StartPanel startPanel;
+	public MainFrame(){
+		StartPanel sign = new StartPanel("Sign up");
+	}
+}

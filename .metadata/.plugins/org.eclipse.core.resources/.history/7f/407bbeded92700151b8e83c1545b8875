@@ -1,0 +1,14 @@
+package nju.view;
+
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+public class Images {
+	protected static ImageIcon createImageIcon(String path){
+		ImageIcon icon = new ImageIcon(path);
+		return icon;
+	}
+	
+	public static final Image INITIAL_IMAGE = createImage("images/mainFrameIcon.gif");
+}

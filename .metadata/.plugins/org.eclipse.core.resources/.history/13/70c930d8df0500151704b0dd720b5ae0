@@ -1,0 +1,17 @@
+
+public class TestALU {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+         ALU a = new ALU();
+//        System.out.println(Integer.valueOf("01100",2)-Integer.valueOf("0001",2));
+//        System.out.println( a.floatRepresentation("0.0",3,3));
+  //   System.out.println( a.floatAddition("00111111010000000000000000000000","11000010100000101000000000000000",23,8,0));
+      //   System.out.println(a.integerSubtraction( "1101100101000000" , "0000100011001000", 16));
+      //  System.out.println(a.calculation("1*5="));
+     //    System.out.println(a.T);
+   //     System.out.println(a.integerRepresentation("-4", 32));
+        System.out.println(a.integerMultiplication("01","0101",4 ));
+   	}
+
+}

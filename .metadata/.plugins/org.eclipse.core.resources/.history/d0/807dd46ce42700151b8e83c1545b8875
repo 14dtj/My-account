@@ -1,0 +1,11 @@
+package nju.view;
+
+import javax.swing.*;
+
+public class MainFrame {
+	private JFrame frame;
+	private StartPanel startPanel;
+	public MainFrame(){
+		StartPanel sign = new StartPanel();
+	}
+}

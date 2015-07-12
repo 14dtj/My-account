@@ -1,0 +1,5 @@
+package nju.view;
+
+public class StartPanel extends JPanel{
+
+}

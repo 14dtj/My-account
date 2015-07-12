@@ -1,0 +1,11 @@
+package nju.view;
+
+import java.awt.*;
+
+import javax.swing.*;
+
+public class StartPanel extends JPanel{
+	public void paintComponent(Graphics g){
+		
+	}
+}
