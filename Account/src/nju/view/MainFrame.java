@@ -2,6 +2,9 @@ package nju.view;
 
 import javax.swing.*;
 
+import nju.config.ConfigReader;
+import nju.config.FrameConfig;
+
 public class MainFrame {
 	private JFrame mainFrame;
 	private StartPanel startPanel;
@@ -11,12 +14,13 @@ public class MainFrame {
 		mainFrame.setVisible(true);
 	}
 	private void initComponents() {
+		FrameConfig fc = ConfigReader.getFrameConfig();
 		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit()
 				.getScreenSize();
-		mainFrame.setSize(1080, 700);
-		mainFrame.setLocation((screenSize.width - 1080) / 2,screenSize.height-700/2-400);
+		mainFrame.setSize(fc.getWidth(), fc.getHeight());
+		mainFrame.setLocation((screenSize.width - fc.getWidth()) / 2,screenSize.height-fc.getHeight()/2-400);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    
+		mainFrame.setResizable(false);
 		mainFrame.getContentPane().add(startPanel);
 	}
 	private void componentsInstantiation() {
