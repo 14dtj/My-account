@@ -1,0 +1,77 @@
+package nju.controller.msqueue;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+import nju.controller.operation.Operation;
+import nju.model.*;
+
+public class OperationQueue implements Runnable{
+	private static BlockingQueue<Operation> queue;
+	
+	public static boolean isRunning;
+	
+	public static boolean singleUpdateSwitch = true;
+	
+	private static DataModel data;
+	private static SystemModel system;
+	
+	public OperationQueue(DataModel dataModel, SystemModel systemModel){
+		queue = new ArrayBlockingQueue<Operation>(1000);
+		isRunning = true;
+		
+		data = dataModel;
+		system = systemModel;
+		
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(isRunning){
+			Operation operation = getNewOperation();
+			operation.execute();
+		}
+	}
+	
+	
+	public static boolean addMineOperation (MineOperation operation){
+		try {
+			queue.put(operation);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
+	private static Operation getNewOperation (){
+		Operation  operation = null;
+		try {
+			operation = queue.take();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return operation;
+	}
+	
+	public static ChessBoardModelService getChessBoardModel(){
+		return chessBoard;
+	}
+	
+	public static GameModelService getGameModel(){
+		return gameModel;
+	}
+	
+	public static void setGameModel(GameModelService gameMode){
+		gameModel = gameMode;
+	}
+	
+	public static void setChessBoardModel(ChessBoardModelService chessModel){
+		chessBoard = chessModel;
+	}
+
+}

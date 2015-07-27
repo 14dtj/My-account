@@ -1,7 +1,0 @@
-package nju.view;
-
-import javax.swing.*;
-
-public class MainFrame extends JFrame{
-	private JPanel startPanel;
-}

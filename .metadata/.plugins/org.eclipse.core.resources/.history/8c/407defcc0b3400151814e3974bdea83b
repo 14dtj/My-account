@@ -1,0 +1,5 @@
+package nju.controller.msqueue;
+
+public class OperationQueue {
+
+}

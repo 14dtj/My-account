@@ -1,0 +1,11 @@
+package nju.controller;
+
+import nju.model.po.UserPO;
+
+public class SystemController {
+	
+	public boolean checkIn(UserPO po){
+		
+	}
+
+}

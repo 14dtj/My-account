@@ -1,0 +1,23 @@
+package nju.controller;
+
+import nju.model.po.*;
+
+/**
+ * control basic function of the system
+ * @author Cui
+ *
+ */
+public class SystemController {
+	
+	public boolean signIn(UserPO user){
+		return false;
+	}
+
+	public boolean signUp(UserPO user){
+		return false;
+	}
+	
+	public boolean checkOut(){
+		return false;
+	}
+}
