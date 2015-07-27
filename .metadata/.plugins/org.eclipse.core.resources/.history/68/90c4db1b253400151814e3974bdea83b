@@ -1,0 +1,10 @@
+package nju.controller.operation;
+
+public class SignInOperation extends Operation{
+
+	@Override
+	public void execute() {
+		
+	}
+
+}

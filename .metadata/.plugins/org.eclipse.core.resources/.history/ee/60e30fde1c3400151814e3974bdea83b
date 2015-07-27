@@ -1,0 +1,9 @@
+package nju.model;
+
+import java.io.*;
+
+public class IOhelper {
+
+	BufferedReader reader = null;
+	BufferedWriter writer = null;
+}

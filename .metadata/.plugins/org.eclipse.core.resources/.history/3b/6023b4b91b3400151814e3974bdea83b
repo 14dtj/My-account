@@ -1,0 +1,21 @@
+package nju.controller.operation;
+
+import nju.controller.msqueue.OperationQueue;
+import nju.model.SystemModel;
+import nju.model.po.UserPO;
+
+public class SignUpOperation extends Operation{
+
+	
+	
+	public SignUpOperation(UserPO user) {
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void execute() {
+		SystemModel system = OperationQueue.getSystem();
+		
+	}
+
+}

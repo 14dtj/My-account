@@ -1,0 +1,24 @@
+package nju.model;
+
+import java.io.*;
+
+import nju.model.po.UserPO;
+
+public class IOhelper {
+
+	static BufferedReader reader = null;
+	static BufferedWriter writer = null;
+	
+	public static boolean signUp(UserPO user){
+		//initialize
+		reader = new BufferedReader(arg0)
+		//verify that no same name
+		
+		return false;
+	}
+	
+	public static boolean signIn(UserPO user){
+		return false;
+	}
+	
+}

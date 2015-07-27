@@ -59,7 +59,6 @@ public class OperationQueue implements Runnable{
 		try {
 			queue.put(operation);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -72,7 +71,6 @@ public class OperationQueue implements Runnable{
 		try {
 			operation = queue.take();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return operation;

@@ -1,0 +1,17 @@
+package nju.controller.operation;
+
+import nju.model.po.UserPO;
+
+public class SignInOperation extends Operation{
+
+	UserPO user = null;
+	
+	public SignInOperation(UserPO user) {
+		this.user = user;
+	}
+	@Override
+	public void execute() {
+		
+	}
+
+}

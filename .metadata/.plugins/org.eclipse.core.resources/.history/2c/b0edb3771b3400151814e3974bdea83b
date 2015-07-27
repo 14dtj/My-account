@@ -1,0 +1,11 @@
+package nju.controller.operation;
+
+public class SignUpOperation extends Operation{
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

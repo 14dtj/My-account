@@ -1,0 +1,40 @@
+package nju.model;
+
+import java.io.*;
+
+import nju.model.po.UserPO;
+
+public class IOhelper {
+
+	static BufferedReader reader = null;
+	static BufferedWriter writer = null;
+	
+	public static boolean signUp(UserPO user){
+		//initialize
+		try {
+			reader = new BufferedReader(new FileReader("data/users.data"));
+			//verify that no same name
+			String temp = "";
+			while((temp = reader.readLine())!=null){
+				if(user.getName().equals(temp.split(" ")[0])){
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean signIn(UserPO user){
+		return false;
+	}
+	
+}

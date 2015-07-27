@@ -1,6 +1,10 @@
 package nju.controller;
 
-import nju.model.po.*;
+import nju.controller.msqueue.OperationQueue;
+import nju.controller.operation.Operation;
+import nju.controller.operation.SignInOperation;
+import nju.controller.operation.SignUpOperation;
+import nju.model.po.UserPO;
 
 /**
  * control basic function of the system
@@ -10,11 +14,15 @@ import nju.model.po.*;
 public class SystemController {
 	
 	public boolean signIn(UserPO user){
-		return false;
+		Operation signIn = new SignInOperation(user);
+		OperationQueue.addOperation(signIn);
+		return true;
 	}
 
 	public boolean signUp(UserPO user){
-		return false;
+		Operation signUp = new SignUpOperation(user);
+		OperationQueue.addOperation(signUp);
+		return true;
 	}
 	
 	public boolean checkOut(){

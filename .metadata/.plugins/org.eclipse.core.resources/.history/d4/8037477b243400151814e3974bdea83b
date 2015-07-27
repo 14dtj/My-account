@@ -1,0 +1,9 @@
+package nju.model.po;
+
+public class UserPO {
+
+	private String name;
+	private String password;
+	
+	
+}
