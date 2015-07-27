@@ -1,0 +1,5 @@
+package nju.model;
+import java.util.*;
+public class BaseModel extends Observer{
+
+}
