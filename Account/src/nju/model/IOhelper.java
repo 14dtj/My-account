@@ -20,7 +20,7 @@ public class IOhelper {
 			String temp = "";
 			while((temp = reader.readLine())!=null){
 				buffer.add(temp);
-				if(user.getName().equals(temp.split(" ")[0])){
+				if(user.getName().equals(temp.split(":")[0])){
 					return false;
 				}
 			}
@@ -39,7 +39,7 @@ public class IOhelper {
 			for(String already:buffer){
 				writer.write(already+"\n");
 			}
-			writer.write(user.getName()+" "+user.getPassword());
+			writer.write(user.getName()+":"+user.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -57,7 +57,7 @@ public class IOhelper {
 			reader = new BufferedReader(new FileReader("data/users.data"));
 			String userRead = "";
 			while((userRead = reader.readLine())!=null){
-				String[] userGet = userRead.split(" ");
+				String[] userGet = userRead.split(":");
 				if(userGet[0].equals(user.getName())&&userGet[1].equals(user.getPassword())){
 					return true;
 				}

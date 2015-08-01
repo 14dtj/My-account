@@ -8,11 +8,17 @@ import nju.config.FrameConfig;
 public class MainFrame {
 	private JFrame mainFrame;
 	private StartPanel startPanel;
+	
 	public MainFrame(){
 		componentsInstantiation();
 		initComponents();
 		mainFrame.setVisible(true);
 	}
+	
+	public StartPanel getStartPanel() {
+		return startPanel;
+	}
+	
 	private void initComponents() {
 		FrameConfig fc = ConfigReader.getFrameConfig();
 		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit()
