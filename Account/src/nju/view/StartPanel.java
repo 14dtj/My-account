@@ -14,7 +14,12 @@ import nju.config.FrameConfig;
 
 public class StartPanel extends JPanel{
 	private List<Component> components= null;
+	private JTextField firstName = null;
+	private JTextField lastName = null;
+	private JPasswordField passWord = null;
+	
 	public StartPanel(){
+		this.setLayout(null);
 		initComponent();
 	}
 	public void initComponent(){
@@ -41,6 +46,22 @@ public class StartPanel extends JPanel{
 				e.printStackTrace();
 			} 
 		}
+		
+
+		firstName = new JTextField(10);
+		lastName = new JTextField(10);
+		passWord = new JPasswordField(10);
+	
+		firstName.setBounds(layersCfg.get(3).getX(),layersCfg.get(3).getY(),
+				layersCfg.get(3).getW(),layersCfg.get(3).getH());
+		lastName.setBounds(layersCfg.get(4).getX(),layersCfg.get(4).getY(),
+				layersCfg.get(4).getW(),layersCfg.get(4).getH());
+		passWord.setBounds(layersCfg.get(5).getX(),layersCfg.get(5).getY(),
+				layersCfg.get(5).getW(),layersCfg.get(5).getH());
+        passWord.setEchoChar('*');
+		add(firstName);
+		add(lastName);
+		add(passWord);
 	}
 
 

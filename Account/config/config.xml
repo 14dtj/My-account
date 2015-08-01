@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <account>
 	<frame width="1080" height="700">
-		
+			<component name="SIGN_UP_IMAGE" x="312" y="66" width="456" height="568"/>
+			<component name="SIGN_UP_ICON" x="600" y="520" width="159" height="70"/>
+			<component name="CLEAN_ICON" x="343" y="55" width="243" height="46"/>
+			<component name="label1" x="380" y="240" width="300" height="40"/>
+			<component name="label2" x="380" y="320" width="300" height="40"/>
+			<component name="label3" x="380" y="420" width="300" height="40"/>
 			<component name="SIGN_UP_IMAGE" x="312" y="66" width="456" height="568"></component>
 			<component name="SIGN_UP_ICON" x="0" y="0" width="0" height="0"/>
 			<component name="CLEAN_ICON" x="0" y="0" width="0" height="0"></component>
