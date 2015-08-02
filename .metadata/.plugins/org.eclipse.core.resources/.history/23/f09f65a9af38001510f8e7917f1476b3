@@ -1,0 +1,18 @@
+package nju.main;
+
+import nju.controller.msqueue.OperationQueue;
+import nju.model.*;
+import nju.view.MainFrame;
+
+public class MyAccount {
+
+	public static void main(String[] args) {
+		MainFrame ui = new MainFrame();
+		SystemModel systemModel = new SystemModel();
+		DataModel dataModel = new DataModel();
+		systemModel.addObserver(ui.getStartPanel());
+		
+		OperationQueue operationQueue = new OperationQueue(dataModel, systemModel);
+	}
+
+}
